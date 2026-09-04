@@ -32,6 +32,8 @@ public class SimpleWordChooser : MonoBehaviour
         new WordRound { word = "Rooster", leftCategory = "Night", rightCategory = "Dawn", isLeftCorrect = false }
     };
 
+    [SerializeField] private SunriseLightingController sunriseLightingController;
+
     private int currentRoundIndex = 0;
     private Vector3 centerOrigin;
     private bool isResolving = false;
@@ -39,10 +41,21 @@ public class SimpleWordChooser : MonoBehaviour
 
     void Start()
     {
+        if (sunriseLightingController == null)
+        {
+            TryGetComponent(out sunriseLightingController);
+        }
+
+        if (sunriseLightingController != null)
+        {
+            sunriseLightingController.Initialize(rounds != null ? rounds.Length : 0, score);
+        }
+
         if (centerWordDisplay != null)
         {
             centerOrigin = centerWordDisplay.transform.position;
         }
+
         LoadRound(0);
     }
 
@@ -103,6 +116,12 @@ public class SimpleWordChooser : MonoBehaviour
         if (isCorrect)
         {
             score++;
+
+            if (sunriseLightingController != null)
+            {
+                sunriseLightingController.UpdateSuccessCount(score);
+            }
+
             centerWordDisplay.color = Color.yellow; // Visual hit feedback
             Debug.Log($"Correct! Score: {score}");
         }
