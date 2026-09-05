@@ -198,11 +198,14 @@ public class SunriseLightingController : MonoBehaviour
             morningAmbientGroundColor,
             visualProgress);
 
+        */
+
+        // Dynamically scale the global ambient light multiplier
+        // This allows objects to get pitch black at night, while letting the Skybox provide the color during the day.
         RenderSettings.ambientIntensity = Mathf.Lerp(
             preDawnAmbientIntensity,
             morningAmbientIntensity,
             visualProgress);
-        */
 
         // Re-injecting the Cinematic Fog from our original Sunrise.cs script!
         // This hides the default Unity skybox's "brown" twilight band and replaces it with gorgeous atmospherics.
