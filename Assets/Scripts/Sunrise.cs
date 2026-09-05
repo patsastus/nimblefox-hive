@@ -91,10 +91,10 @@ void Update()
 {
     if (Application.isPlaying)
     {
-        // Legacy input removed to prevent crashes with the New Input System.
-        // During Play mode, Wordchooser handles everything.
+        // Prevent Sunrise.cs from fighting the SunriseLightingController!
+        return;
     }
 
     ApplyAtmosphere(progress);
-    }
+}
 }
