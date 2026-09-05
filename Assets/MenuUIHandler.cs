@@ -1,31 +1,45 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; // Required for scene loading
+using UnityEngine.SceneManagement;
 
 public class MenuUIHandler : MonoBehaviour
 {
     // Reference to the popup panel - drag your HowToPlayPopup here in the Inspector
     public GameObject howToPlayPopup;
+    
+    // Reference to the logo - drag your logo GameObject here in the Inspector
+    public GameObject logo;
 
     // This method will be called when the "Start" button is clicked
     public void StartNewGame()
     {
         // Load the scene at index 1 in your Build Settings.
-        // You can also load by name, e.g., SceneManager.LoadScene("Level1");
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("FirstLightWords");
     }
 
     // This method will be called when the "How To Play" button is clicked
     public void ShowHowToPlay()
     {
-        // Make the popup appear
+        // Show the popup
         howToPlayPopup.SetActive(true);
+        
+        // Hide the logo
+        if (logo != null)
+        {
+            logo.SetActive(false);
+        }
     }
 
     // This method will be called when the "Close" button on the popup is clicked
     public void CloseHowToPlay()
     {
-        // Make the popup disappear
+        // Hide the popup
         howToPlayPopup.SetActive(false);
+        
+        // Show the logo again
+        if (logo != null)
+        {
+            logo.SetActive(true);
+        }
     }
 
     public void QuitGame()
