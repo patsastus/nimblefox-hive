@@ -204,6 +204,28 @@ public class SunriseLightingController : MonoBehaviour
             visualProgress);
         */
 
+        // Re-injecting the Cinematic Fog from our original Sunrise.cs script!
+        // This hides the default Unity skybox's "brown" twilight band and replaces it with gorgeous atmospherics.
+        RenderSettings.fog = true;
+        RenderSettings.fogMode = FogMode.ExponentialSquared;
+
+        Color fogColorNight = new Color(0.01f, 0.02f, 0.08f);
+        Color fogColorDawn = new Color(0.6f, 0.2f, 0.3f);
+        Color fogColorDay = new Color(0.49f, 0.69f, 0.84f);
+
+        if (visualProgress < 0.5f)
+        {
+            float localT = visualProgress / 0.5f; // 0 to 1 mapping for the first half
+            RenderSettings.fogColor = Color.Lerp(fogColorNight, fogColorDawn, localT);
+            RenderSettings.fogDensity = Mathf.Lerp(0.045f, 0.025f, localT);
+        }
+        else
+        {
+            float localT = (visualProgress - 0.5f) / 0.5f; // 0 to 1 mapping for the second half
+            RenderSettings.fogColor = Color.Lerp(fogColorDawn, fogColorDay, localT);
+            RenderSettings.fogDensity = Mathf.Lerp(0.025f, 0.01f, localT);
+        }
+
         // Removed the code that forces CameraClearFlags.SolidColor so the procedural Skybox (and sun) remains visible!
         if (environmentCamera != null && environmentCamera.clearFlags == CameraClearFlags.SolidColor)
         {
