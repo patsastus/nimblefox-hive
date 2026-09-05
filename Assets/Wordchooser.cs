@@ -20,8 +20,7 @@ public class SimpleWordChooser : MonoBehaviour
         public WordRound[] rounds;
     }
 
-    [Header("Data")]
-    public TextAsset roundsJsonFile;
+    // Data references moved below
 
     [Header("UI / 3D Text References")]
     public TextMeshPro centerWordDisplay;
@@ -41,6 +40,16 @@ public class SimpleWordChooser : MonoBehaviour
         new WordRound { word = "Rooster", leftCategory = "Night", rightCategory = "Dawn", isLeftCorrect = false }
     };
 
+    [Header("Game Rules")]
+    [Tooltip("How many correct answers does it take to make the sun fully rise?")]
+    public int requiredScoreToWin = 12;
+    [Tooltip("If true, ignores roundsJsonFile and generates an endless unique game from fullDatabaseJson")]
+    public bool useDynamicDatabase = false;
+
+    [Header("Data")]
+    public TextAsset roundsJsonFile;
+    public TextAsset fullDatabaseJson;
+
     [SerializeField] private SunriseLightingController sunriseLightingController;
 
     private int currentRoundIndex = 0;
@@ -50,7 +59,12 @@ public class SimpleWordChooser : MonoBehaviour
 
     void Start()
     {
-        if (roundsJsonFile != null)
+        if (useDynamicDatabase && fullDatabaseJson != null)
+        {
+            // Generate enough rounds to win, plus a huge buffer for wrong guesses
+            rounds = DynamicRoundGenerator.GenerateRounds(fullDatabaseJson, requiredScoreToWin + 10);
+        }
+        else if (roundsJsonFile != null)
         {
             GameRoundsWrapper data = JsonUtility.FromJson<GameRoundsWrapper>(roundsJsonFile.text);
             if (data != null && data.rounds != null && data.rounds.Length > 0)
@@ -66,20 +80,25 @@ public class SimpleWordChooser : MonoBehaviour
 
         if (sunriseLightingController != null)
         {
-            sunriseLightingController.Initialize(rounds != null ? rounds.Length : 0, score);
+            // Now the sunrise progress is mapped to requiredScoreToWin instead of total rounds!
+            sunriseLightingController.Initialize(requiredScoreToWin, score);
         }
 
         if (centerWordDisplay != null)
         {
             centerOrigin = centerWordDisplay.transform.position;
+            centerWordDisplay.enableWordWrapping = false;
         }
+        
+        if (leftCategoryDisplay != null) leftCategoryDisplay.enableWordWrapping = false;
+        if (rightCategoryDisplay != null) rightCategoryDisplay.enableWordWrapping = false;
 
         LoadRound(0);
     }
 
     void Update()
     {
-        if (isResolving || currentRoundIndex >= rounds.Length) return;
+        if (isResolving || currentRoundIndex >= rounds.Length || score >= requiredScoreToWin) return;
 
         Keyboard keyboard = Keyboard.current;
         if (keyboard == null) return;
@@ -97,9 +116,10 @@ public class SimpleWordChooser : MonoBehaviour
 
     void LoadRound(int index)
     {
-        if (index >= rounds.Length)
+        // End the game if they hit the sun threshold, OR if we run out of words
+        if (score >= requiredScoreToWin || index >= rounds.Length)
         {
-            centerWordDisplay.text = "FIRST LIGHT REACHED!";
+            EndGame();
             return;
         }
 
@@ -110,6 +130,20 @@ public class SimpleWordChooser : MonoBehaviour
 
         if (leftCategoryDisplay) leftCategoryDisplay.text = r.leftCategory;
         if (rightCategoryDisplay) rightCategoryDisplay.text = r.rightCategory;
+    }
+
+    void EndGame()
+    {
+        // Place the splash screen where the candidate started, but raised slightly so the second line clears the ground
+        centerWordDisplay.transform.position = centerOrigin + Vector3.up * 1.5f;
+        
+        // Multi-line splash screen summary
+        centerWordDisplay.text = $"FIRST LIGHT REACHED!\n\nScore: {score} / {currentRoundIndex}";
+        centerWordDisplay.color = Color.yellow;
+
+        // Hide the categories so the screen is clean
+        if (leftCategoryDisplay) leftCategoryDisplay.gameObject.SetActive(false);
+        if (rightCategoryDisplay) rightCategoryDisplay.gameObject.SetActive(false);
     }
 
     IEnumerator ResolveChoice(bool choseLeft)
@@ -132,8 +166,14 @@ public class SimpleWordChooser : MonoBehaviour
         // Evaluate answer
         bool isCorrect = (choseLeft == rounds[currentRoundIndex].isLeftCorrect);
         
-        // Trigger visual pulse on the target
+        // Trigger visual pulse on the target AND the Text display!
         StartCoroutine(PulseTarget(target, isCorrect));
+        
+        Transform textTarget = choseLeft ? leftCategoryDisplay.transform : rightCategoryDisplay.transform;
+        if (textTarget != null && textTarget != target) 
+        {
+            StartCoroutine(PulseTarget(textTarget, isCorrect));
+        }
 
         if (isCorrect)
         {
@@ -165,8 +205,16 @@ public class SimpleWordChooser : MonoBehaviour
         if (target == null) yield break;
 
         Color pulseColor = isCorrect ? Color.green : Color.red;
-        Renderer rend = target.GetComponentInChildren<Renderer>();
-        TMP_Text text = target.GetComponentInChildren<TMP_Text>();
+        
+        // Grab EVERYTHING that can potentially be colored
+        Renderer[] renderers = target.GetComponentsInChildren<Renderer>();
+        UnityEngine.UI.Graphic[] graphics = target.GetComponentsInChildren<UnityEngine.UI.Graphic>();
+        TMP_Text[] texts = target.GetComponentsInChildren<TMP_Text>();
+
+        if (renderers.Length == 0 && graphics.Length == 0 && texts.Length == 0)
+        {
+            Debug.LogWarning($"[PulseTarget] Could not find any visual components on {target.name} or its children to color!");
+        }
 
         Vector3 originalScale = target.localScale;
         Vector3 punchScale = originalScale * 1.4f;
@@ -183,22 +231,28 @@ public class SimpleWordChooser : MonoBehaviour
             float scaleT = Mathf.Sin(t * Mathf.PI);
             target.localScale = Vector3.Lerp(originalScale, punchScale, scaleT);
 
-            // Fade the color from Green/Red back to White
-            if (rend != null && rend.material != null)
+            Color frameColor = Color.Lerp(pulseColor, Color.white, t);
+
+            // Fade the color on everything we found
+            foreach (var r in renderers) 
             {
-                rend.material.color = Color.Lerp(pulseColor, Color.white, t);
+                if (r.material.HasProperty("_Color") || r.material.HasProperty("_BaseColor")) 
+                    r.material.color = frameColor; 
             }
-            if (text != null)
-            {
-                text.color = Color.Lerp(pulseColor, Color.white, t);
-            }
+            foreach (var g in graphics) { g.color = frameColor; }
+            foreach (var txt in texts) { txt.color = frameColor; }
 
             yield return null;
         }
 
         // Reset precisely to normal at the end
         target.localScale = originalScale;
-        if (rend != null && rend.material != null) rend.material.color = Color.white;
-        if (text != null) text.color = Color.white;
+        foreach (var r in renderers) 
+        {
+            if (r.material.HasProperty("_Color") || r.material.HasProperty("_BaseColor")) 
+                r.material.color = Color.white; 
+        }
+        foreach (var g in graphics) { g.color = Color.white; }
+        foreach (var txt in texts) { txt.color = Color.white; }
     }
 }

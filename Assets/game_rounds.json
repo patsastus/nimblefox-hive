@@ -7,67 +7,91 @@
       "isLeftCorrect": true
     },
     {
-      "word": "fires",
+      "word": "fire",
       "leftCategory": "Dawn",
       "rightCategory": "Hearth",
       "isLeftCorrect": false
     },
     {
-      "word": "appearance",
+      "word": "morning",
+      "leftCategory": "Dawn",
+      "rightCategory": "Hearth",
+      "isLeftCorrect": true
+    },
+    {
+      "word": "civilization",
       "leftCategory": "Dawn",
       "rightCategory": "Hearth",
       "isLeftCorrect": false
     },
     {
-      "word": "instances",
+      "word": "sunshine",
+      "leftCategory": "Dawn",
+      "rightCategory": "Hearth",
+      "isLeftCorrect": true
+    },
+    {
+      "word": "lifestyle",
       "leftCategory": "Dawn",
       "rightCategory": "Hearth",
       "isLeftCorrect": false
     },
     {
-      "word": "quizzes",
+      "word": "ocean",
+      "leftCategory": "Dawn",
+      "rightCategory": "Hearth",
+      "isLeftCorrect": true
+    },
+    {
+      "word": "answering",
       "leftCategory": "Dawn",
       "rightCategory": "Hearth",
       "isLeftCorrect": false
     },
     {
-      "word": "pointing",
-      "leftCategory": "Dawn",
-      "rightCategory": "Hearth",
-      "isLeftCorrect": false
-    },
-    {
-      "word": "midnight",
+      "word": "shadow",
       "leftCategory": "Nocturne",
       "rightCategory": "Canopy",
       "isLeftCorrect": true
     },
     {
-      "word": "plants",
+      "word": "roots",
       "leftCategory": "Nocturne",
       "rightCategory": "Canopy",
       "isLeftCorrect": false
     },
     {
-      "word": "forming",
+      "word": "mystery",
+      "leftCategory": "Nocturne",
+      "rightCategory": "Canopy",
+      "isLeftCorrect": true
+    },
+    {
+      "word": "garden",
       "leftCategory": "Nocturne",
       "rightCategory": "Canopy",
       "isLeftCorrect": false
     },
     {
-      "word": "sphere",
+      "word": "hollow",
+      "leftCategory": "Nocturne",
+      "rightCategory": "Canopy",
+      "isLeftCorrect": true
+    },
+    {
+      "word": "pets",
       "leftCategory": "Nocturne",
       "rightCategory": "Canopy",
       "isLeftCorrect": false
     },
     {
-      "word": "guild",
+      "word": "recognition",
       "leftCategory": "Nocturne",
       "rightCategory": "Canopy",
-      "isLeftCorrect": false
+      "isLeftCorrect": true
     },
     {
-      "word": "project",
+      "word": "bugs",
       "leftCategory": "Nocturne",
       "rightCategory": "Canopy",
       "isLeftCorrect": false
@@ -85,28 +109,40 @@
       "isLeftCorrect": false
     },
     {
-      "word": "beaches",
+      "word": "sunset",
       "leftCategory": "Dawn",
       "rightCategory": "Frost",
       "isLeftCorrect": true
     },
     {
-      "word": "parade",
+      "word": "snow",
+      "leftCategory": "Dawn",
+      "rightCategory": "Frost",
+      "isLeftCorrect": false
+    },
+    {
+      "word": "horizon",
       "leftCategory": "Dawn",
       "rightCategory": "Frost",
       "isLeftCorrect": true
     },
     {
-      "word": "common",
+      "word": "arctic",
+      "leftCategory": "Dawn",
+      "rightCategory": "Frost",
+      "isLeftCorrect": false
+    },
+    {
+      "word": "cycles",
       "leftCategory": "Dawn",
       "rightCategory": "Frost",
       "isLeftCorrect": true
     },
     {
-      "word": "occurring",
+      "word": "storm",
       "leftCategory": "Dawn",
       "rightCategory": "Frost",
-      "isLeftCorrect": true
+      "isLeftCorrect": false
     }
   ]
 }
