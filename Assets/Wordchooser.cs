@@ -26,6 +26,8 @@ public class SimpleWordChooser : MonoBehaviour
     public TextMeshPro centerWordDisplay;
     public TextMeshPro leftCategoryDisplay;
     public TextMeshPro rightCategoryDisplay;
+    [Tooltip("Optional dedicated text object for the endgame screen")]
+    public TextMeshPro splashScreenDisplay;
 
     [Header("Positions")]
     public Transform leftTarget;
@@ -93,6 +95,9 @@ public class SimpleWordChooser : MonoBehaviour
         if (leftCategoryDisplay != null) leftCategoryDisplay.enableWordWrapping = false;
         if (rightCategoryDisplay != null) rightCategoryDisplay.enableWordWrapping = false;
 
+        // Ensure the splash screen is hidden during gameplay
+        if (splashScreenDisplay != null) splashScreenDisplay.gameObject.SetActive(false);
+
         LoadRound(0);
     }
 
@@ -134,16 +139,25 @@ public class SimpleWordChooser : MonoBehaviour
 
     void EndGame()
     {
-        // Place the splash screen where the candidate started, but raised slightly so the second line clears the ground
-        centerWordDisplay.transform.position = centerOrigin + Vector3.up * 1.5f;
-        
-        // Multi-line splash screen summary
-        centerWordDisplay.text = $"FIRST LIGHT REACHED!\n\nScore: {score} / {currentRoundIndex}";
-        centerWordDisplay.color = Color.yellow;
-
-        // Hide the categories so the screen is clean
+        // Hide all gameplay elements to clean up the screen
         if (leftCategoryDisplay) leftCategoryDisplay.gameObject.SetActive(false);
         if (rightCategoryDisplay) rightCategoryDisplay.gameObject.SetActive(false);
+        
+        if (splashScreenDisplay != null)
+        {
+            if (centerWordDisplay) centerWordDisplay.gameObject.SetActive(false);
+            
+            splashScreenDisplay.gameObject.SetActive(true);
+            splashScreenDisplay.text = $"FIRST LIGHT REACHED!\n\nScore: {score} / {currentRoundIndex}";
+            splashScreenDisplay.color = Color.yellow;
+        }
+        else
+        {
+            // Fallback if no dedicated splash screen is assigned
+            centerWordDisplay.transform.position = centerOrigin + Vector3.up * 1.5f;
+            centerWordDisplay.text = $"FIRST LIGHT REACHED!\n\nScore: {score} / {currentRoundIndex}";
+            centerWordDisplay.color = Color.yellow;
+        }
     }
 
     IEnumerator ResolveChoice(bool choseLeft)

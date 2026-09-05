@@ -22,3 +22,5 @@
 # OS generated
 .DS_Store
 Thumbs.db
+firstlight-web/
+*.zip
