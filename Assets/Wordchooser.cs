@@ -71,11 +71,11 @@ public class SimpleWordChooser : MonoBehaviour
         if (centerWordDisplay != null)
         {
             centerOrigin = centerWordDisplay.transform.position;
-            centerWordDisplay.enableWordWrapping = false;
+            centerWordDisplay.textWrappingMode = TextWrappingModes.NoWrap;
         }
         
-        if (leftCategoryDisplay != null) leftCategoryDisplay.enableWordWrapping = false;
-        if (rightCategoryDisplay != null) rightCategoryDisplay.enableWordWrapping = false;
+        if (leftCategoryDisplay != null) leftCategoryDisplay.textWrappingMode = TextWrappingModes.NoWrap;
+        if (rightCategoryDisplay != null) rightCategoryDisplay.textWrappingMode = TextWrappingModes.NoWrap;
         if (splashScreenDisplay != null) splashScreenDisplay.gameObject.SetActive(false);
 
         ShiftCategories();

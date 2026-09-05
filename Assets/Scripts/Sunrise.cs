@@ -91,20 +91,8 @@ void Update()
 {
     if (Application.isPlaying)
     {
-        // Left / Right: Scrub Dawn Progress (Time of Day)
-        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
-            progress += scrubSpeed * Time.deltaTime;
-        else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
-            progress -= scrubSpeed * Time.deltaTime;
-
-        // Up / Down: Spin Sun Compass Heading (Horizon Direction)
-        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
-            sunFacingY += rotationSpeed * Time.deltaTime;
-        else if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
-            sunFacingY -= rotationSpeed * Time.deltaTime;
-
-        progress = Mathf.Clamp01(progress);
-        sunFacingY = Mathf.Repeat(sunFacingY, 360f); // Wraps 0-360
+        // Legacy input removed to prevent crashes with the New Input System.
+        // During Play mode, Wordchooser handles everything.
     }
 
     ApplyAtmosphere(progress);
