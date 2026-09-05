@@ -6,6 +6,7 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 /[Mm]emoryCaptures/
+Assets/AssetStoreTools*
 
 # Visual Studio Code / IDE files
 .vscode/
@@ -18,9 +19,15 @@
 *.userprefs
 *.pidb
 *.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
 
 # OS generated
 .DS_Store
 Thumbs.db
 firstlight-web/
 *.zip
+ProjectSettings/ProjectAuditorSettings.asset
