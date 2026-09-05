@@ -157,52 +157,57 @@ public class SunriseLightingController : MonoBehaviour
 
         float progress = Mathf.Clamp01(normalizedProgress);
 
+        // Injecting the dramatic cinematic curves we built earlier
+        float dramaCurve = (progress < 0.5f) ? Mathf.Pow(progress / 0.5f, 1.5f) : 1f;
+        float softCurve = (progress >= 0.5f) ? Mathf.SmoothStep(0f, 1f, (progress - 0.5f) / 0.5f) : 0f;
+        float visualProgress = (progress < 0.5f) ? (dramaCurve * 0.5f) : (0.5f + softCurve * 0.5f);
+
         if (directionalSun != null)
         {
             directionalSun.transform.rotation = Quaternion.Slerp(
                 Quaternion.Euler(preDawnSunRotation),
                 Quaternion.Euler(morningSunRotation),
-                progress);
+                visualProgress);
 
             directionalSun.intensity = Mathf.Lerp(
                 preDawnDirectionalIntensity,
                 morningDirectionalIntensity,
-                progress);
+                visualProgress);
 
             directionalSun.color = Color.Lerp(
                 preDawnDirectionalColor,
                 morningDirectionalColor,
-                progress);
+                visualProgress);
         }
 
         RenderSettings.ambientMode = AmbientMode.Trilight;
         RenderSettings.ambientSkyColor = Color.Lerp(
             preDawnAmbientSkyColor,
             morningAmbientSkyColor,
-            progress);
+            visualProgress);
 
         RenderSettings.ambientEquatorColor = Color.Lerp(
             preDawnAmbientEquatorColor,
             morningAmbientEquatorColor,
-            progress);
+            visualProgress);
 
         RenderSettings.ambientGroundColor = Color.Lerp(
             preDawnAmbientGroundColor,
             morningAmbientGroundColor,
-            progress);
+            visualProgress);
 
         RenderSettings.ambientIntensity = Mathf.Lerp(
             preDawnAmbientIntensity,
             morningAmbientIntensity,
-            progress);
+            visualProgress);
 
-        if (environmentCamera != null)
+        // Removed the code that forces CameraClearFlags.SolidColor so the procedural Skybox (and sun) remains visible!
+        if (environmentCamera != null && environmentCamera.clearFlags == CameraClearFlags.SolidColor)
         {
-            environmentCamera.clearFlags = CameraClearFlags.SolidColor;
             environmentCamera.backgroundColor = Color.Lerp(
                 preDawnCameraSkyColor,
                 morningCameraSkyColor,
-                progress);
+                visualProgress);
         }
     }
 }

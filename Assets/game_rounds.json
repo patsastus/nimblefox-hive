@@ -1,0 +1,112 @@
+{
+  "rounds": [
+    {
+      "word": "sunrise",
+      "leftCategory": "Dawn",
+      "rightCategory": "Hearth",
+      "isLeftCorrect": true
+    },
+    {
+      "word": "fires",
+      "leftCategory": "Dawn",
+      "rightCategory": "Hearth",
+      "isLeftCorrect": false
+    },
+    {
+      "word": "appearance",
+      "leftCategory": "Dawn",
+      "rightCategory": "Hearth",
+      "isLeftCorrect": false
+    },
+    {
+      "word": "instances",
+      "leftCategory": "Dawn",
+      "rightCategory": "Hearth",
+      "isLeftCorrect": false
+    },
+    {
+      "word": "quizzes",
+      "leftCategory": "Dawn",
+      "rightCategory": "Hearth",
+      "isLeftCorrect": false
+    },
+    {
+      "word": "pointing",
+      "leftCategory": "Dawn",
+      "rightCategory": "Hearth",
+      "isLeftCorrect": false
+    },
+    {
+      "word": "midnight",
+      "leftCategory": "Nocturne",
+      "rightCategory": "Canopy",
+      "isLeftCorrect": true
+    },
+    {
+      "word": "plants",
+      "leftCategory": "Nocturne",
+      "rightCategory": "Canopy",
+      "isLeftCorrect": false
+    },
+    {
+      "word": "forming",
+      "leftCategory": "Nocturne",
+      "rightCategory": "Canopy",
+      "isLeftCorrect": false
+    },
+    {
+      "word": "sphere",
+      "leftCategory": "Nocturne",
+      "rightCategory": "Canopy",
+      "isLeftCorrect": false
+    },
+    {
+      "word": "guild",
+      "leftCategory": "Nocturne",
+      "rightCategory": "Canopy",
+      "isLeftCorrect": false
+    },
+    {
+      "word": "project",
+      "leftCategory": "Nocturne",
+      "rightCategory": "Canopy",
+      "isLeftCorrect": false
+    },
+    {
+      "word": "sunrise",
+      "leftCategory": "Dawn",
+      "rightCategory": "Frost",
+      "isLeftCorrect": true
+    },
+    {
+      "word": "cold",
+      "leftCategory": "Dawn",
+      "rightCategory": "Frost",
+      "isLeftCorrect": false
+    },
+    {
+      "word": "beaches",
+      "leftCategory": "Dawn",
+      "rightCategory": "Frost",
+      "isLeftCorrect": true
+    },
+    {
+      "word": "parade",
+      "leftCategory": "Dawn",
+      "rightCategory": "Frost",
+      "isLeftCorrect": true
+    },
+    {
+      "word": "common",
+      "leftCategory": "Dawn",
+      "rightCategory": "Frost",
+      "isLeftCorrect": true
+    },
+    {
+      "word": "occurring",
+      "leftCategory": "Dawn",
+      "rightCategory": "Frost",
+      "isLeftCorrect": true
+    }
+  ]
+}

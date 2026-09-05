@@ -1,0 +1,113 @@
+[
+  {
+    "round": "Dawn vs Hearth",
+    "easy_words": [
+      {
+        "word": "sunrise",
+        "score": 0.849699854850769,
+        "target": "Dawn"
+      },
+      {
+        "word": "fire",
+        "score": 0.7623394727706909,
+        "target": "Hearth"
+      }
+    ],
+    "tricky_words": [
+      {
+        "word": "childhood",
+        "dawn_score": 0.539,
+        "hearth_score": 0.579
+      },
+      {
+        "word": "ocean",
+        "dawn_score": 0.515,
+        "hearth_score": 0.494
+      },
+      {
+        "word": "sea",
+        "dawn_score": 0.512,
+        "hearth_score": 0.493
+      },
+      {
+        "word": "startup",
+        "dawn_score": 0.519,
+        "hearth_score": 0.486
+      }
+    ]
+  },
+  {
+    "round": "Nocturne vs Canopy",
+    "easy_words": [
+      {
+        "word": "shadow",
+        "score": 0.7404433488845825,
+        "target": "Nocturne"
+      },
+      {
+        "word": "roots",
+        "score": 0.6957651972770691,
+        "target": "Canopy"
+      }
+    ],
+    "tricky_words": [
+      {
+        "word": "moon",
+        "nocturne_score": 0.485,
+        "canopy_score": 0.492
+      },
+      {
+        "word": "monster",
+        "nocturne_score": 0.459,
+        "canopy_score": 0.498
+      },
+      {
+        "word": "spider",
+        "nocturne_score": 0.486,
+        "canopy_score": 0.463
+      },
+      {
+        "word": "creature",
+        "nocturne_score": 0.445,
+        "canopy_score": 0.48
+      }
+    ]
+  },
+  {
+    "round": "Frost vs Dawn",
+    "easy_words": [
+      {
+        "word": "cold",
+        "score": 0.8016349077224731,
+        "target": "Frost"
+      },
+      {
+        "word": "sunrise",
+        "score": 0.849699854850769,
+        "target": "Dawn"
+      }
+    ],
+    "tricky_words": [
+      {
+        "word": "clouds",
+        "frost_score": 0.553,
+        "dawn_score": 0.518
+      },
+      {
+        "word": "storm",
+        "frost_score": 0.512,
+        "dawn_score": 0.496
+      },
+      {
+        "word": "cloudy",
+        "frost_score": 0.512,
+        "dawn_score": 0.486
+      },
+      {
+        "word": "atmospheric",
+        "frost_score": 0.48,
+        "dawn_score": 0.512
+      }
+    ]
+  }
+]

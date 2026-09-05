@@ -14,6 +14,15 @@ public class SimpleWordChooser : MonoBehaviour
         public bool isLeftCorrect;
     }
 
+    [System.Serializable]
+    public class GameRoundsWrapper
+    {
+        public WordRound[] rounds;
+    }
+
+    [Header("Data")]
+    public TextAsset roundsJsonFile;
+
     [Header("UI / 3D Text References")]
     public TextMeshPro centerWordDisplay;
     public TextMeshPro leftCategoryDisplay;
@@ -41,6 +50,15 @@ public class SimpleWordChooser : MonoBehaviour
 
     void Start()
     {
+        if (roundsJsonFile != null)
+        {
+            GameRoundsWrapper data = JsonUtility.FromJson<GameRoundsWrapper>(roundsJsonFile.text);
+            if (data != null && data.rounds != null && data.rounds.Length > 0)
+            {
+                rounds = data.rounds;
+            }
+        }
+
         if (sunriseLightingController == null)
         {
             TryGetComponent(out sunriseLightingController);
@@ -113,6 +131,10 @@ public class SimpleWordChooser : MonoBehaviour
 
         // Evaluate answer
         bool isCorrect = (choseLeft == rounds[currentRoundIndex].isLeftCorrect);
+        
+        // Trigger visual pulse on the target
+        StartCoroutine(PulseTarget(target, isCorrect));
+
         if (isCorrect)
         {
             score++;
@@ -136,5 +158,47 @@ public class SimpleWordChooser : MonoBehaviour
         currentRoundIndex++;
         LoadRound(currentRoundIndex);
         isResolving = false;
+    }
+
+    IEnumerator PulseTarget(Transform target, bool isCorrect)
+    {
+        if (target == null) yield break;
+
+        Color pulseColor = isCorrect ? Color.green : Color.red;
+        Renderer rend = target.GetComponentInChildren<Renderer>();
+        TMP_Text text = target.GetComponentInChildren<TMP_Text>();
+
+        Vector3 originalScale = target.localScale;
+        Vector3 punchScale = originalScale * 1.4f;
+
+        float duration = 0.4f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            
+            // Pop the scale up and down using a Sine wave (0 -> 1 -> 0)
+            float scaleT = Mathf.Sin(t * Mathf.PI);
+            target.localScale = Vector3.Lerp(originalScale, punchScale, scaleT);
+
+            // Fade the color from Green/Red back to White
+            if (rend != null && rend.material != null)
+            {
+                rend.material.color = Color.Lerp(pulseColor, Color.white, t);
+            }
+            if (text != null)
+            {
+                text.color = Color.Lerp(pulseColor, Color.white, t);
+            }
+
+            yield return null;
+        }
+
+        // Reset precisely to normal at the end
+        target.localScale = originalScale;
+        if (rend != null && rend.material != null) rend.material.color = Color.white;
+        if (text != null) text.color = Color.white;
     }
 }
