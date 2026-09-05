@@ -42,6 +42,7 @@ public class SunriseLightingController : MonoBehaviour
     private void Awake()
     {
         ResolveReferences();
+        RenderSettings.ambientMode = AmbientMode.Trilight;
 
         currentProgress = 0f;
         targetProgress = 0f;
@@ -180,7 +181,6 @@ public class SunriseLightingController : MonoBehaviour
                 visualProgress);
         }
 
-        RenderSettings.ambientMode = AmbientMode.Trilight;
         RenderSettings.ambientSkyColor = Color.Lerp(
             preDawnAmbientSkyColor,
             morningAmbientSkyColor,
