@@ -42,7 +42,6 @@ public class SunriseLightingController : MonoBehaviour
     private void Awake()
     {
         ResolveReferences();
-        RenderSettings.ambientMode = AmbientMode.Trilight;
 
         currentProgress = 0f;
         targetProgress = 0f;
@@ -181,6 +180,9 @@ public class SunriseLightingController : MonoBehaviour
                 visualProgress);
         }
 
+        // We let Unity's procedural skybox handle the ambient lighting automatically!
+        // Forcing ambient colors every frame causes the Global Illumination to flicker (the "brown flash").
+        /*
         RenderSettings.ambientSkyColor = Color.Lerp(
             preDawnAmbientSkyColor,
             morningAmbientSkyColor,
@@ -200,6 +202,7 @@ public class SunriseLightingController : MonoBehaviour
             preDawnAmbientIntensity,
             morningAmbientIntensity,
             visualProgress);
+        */
 
         // Removed the code that forces CameraClearFlags.SolidColor so the procedural Skybox (and sun) remains visible!
         if (environmentCamera != null && environmentCamera.clearFlags == CameraClearFlags.SolidColor)
