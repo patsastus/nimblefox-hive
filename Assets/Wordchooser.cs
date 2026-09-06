@@ -116,7 +116,7 @@ public class SimpleWordChooser : MonoBehaviour
         if (rightCategoryDisplay != null) rightCategoryDisplay.textWrappingMode = TextWrappingModes.NoWrap;
         if (splashScreenDisplay != null) splashScreenDisplay.gameObject.SetActive(false);
 
-        ShiftCategories();
+        ShiftCategories(false);
         LoadNextRound();
     }
 
@@ -135,7 +135,7 @@ public class SimpleWordChooser : MonoBehaviour
         }
     }
 
-    void ShiftCategories()
+    void ShiftCategories(bool playSound = true)
     {
         usedWords.Clear();
         List<string> cats = new List<string>(DynamicRoundGenerator.AllCategories);
@@ -143,7 +143,7 @@ public class SimpleWordChooser : MonoBehaviour
         cats.Remove(currentCatA);
         currentCatB = cats[Random.Range(0, cats.Count)];
 
-        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX(categoryShiftSound);
+        if (playSound && AudioManager.Instance != null) AudioManager.Instance.PlaySFX(categoryShiftSound);
 
         if (splashScreenDisplay != null)
         {
