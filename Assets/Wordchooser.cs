@@ -40,6 +40,13 @@ public class SimpleWordChooser : MonoBehaviour
 
     [SerializeField] private SunriseLightingController sunriseLightingController;
 
+    [Header("Audio")]
+    public AudioSource sfxSource;
+    public AudioClip swipeSound;
+    public AudioClip successSound;
+    public AudioClip failureSound;
+    public AudioClip categoryShiftSound;
+
     private int score = 0;
     private int roundsPlayed = 0;
     private float currentDifficulty = 0f;
@@ -130,6 +137,8 @@ public class SimpleWordChooser : MonoBehaviour
         cats.Remove(currentCatA);
         currentCatB = cats[Random.Range(0, cats.Count)];
 
+        if (sfxSource != null && categoryShiftSound != null) sfxSource.PlayOneShot(categoryShiftSound);
+
         if (splashScreenDisplay != null)
         {
             // Optional: flash a warning. For now we just seamlessly change them.
@@ -203,6 +212,8 @@ public class SimpleWordChooser : MonoBehaviour
         Transform target = choseLeft ? leftTarget : rightTarget;
         Vector3 targetPos = target != null ? target.position : (centerOrigin + (choseLeft ? Vector3.left : Vector3.right) * 6f);
 
+        if (sfxSource != null && swipeSound != null) sfxSource.PlayOneShot(swipeSound);
+
         while (Vector3.Distance(centerWordDisplay.transform.position, targetPos) > 0.1f)
         {
             centerWordDisplay.transform.position = Vector3.MoveTowards(
@@ -220,6 +231,7 @@ public class SimpleWordChooser : MonoBehaviour
 
         if (isCorrect)
         {
+            if (sfxSource != null && successSound != null) sfxSource.PlayOneShot(successSound);
             score++;
             currentDifficulty = Mathf.Clamp01(currentDifficulty + difficultyIncreasePerWin);
             consecutiveWrongAnswers = 0;
@@ -230,6 +242,7 @@ public class SimpleWordChooser : MonoBehaviour
         }
         else
         {
+            if (sfxSource != null && failureSound != null) sfxSource.PlayOneShot(failureSound);
             score--;
             currentDifficulty = Mathf.Clamp01(currentDifficulty - difficultyDecreasePerLoss);
             consecutiveWrongAnswers++;
