@@ -8429,15 +8429,15 @@ PrefabInstance:
     - target: {fileID: 1495678456318767588, guid: a24d95fb9610b868fbb7464a68821f8f, type: 3}
       propertyPath: swipeSound
       value: 
-      objectReference: {fileID: 8300000, guid: dcc1560ecaca5f437adf667e566dfbf8, type: 3}
+      objectReference: {fileID: 8300000, guid: 05d4ba773a0ffdc4da843fe800153a40, type: 3}
     - target: {fileID: 1495678456318767588, guid: a24d95fb9610b868fbb7464a68821f8f, type: 3}
       propertyPath: failureSound
       value: 
-      objectReference: {fileID: 8300000, guid: 1a38938ae304e1a18932653228a784e4, type: 3}
+      objectReference: {fileID: 8300000, guid: 930c846c6e5718ba68de8b75e23fd95e, type: 3}
     - target: {fileID: 1495678456318767588, guid: a24d95fb9610b868fbb7464a68821f8f, type: 3}
       propertyPath: successSound
       value: 
-      objectReference: {fileID: 8300000, guid: c1e45649f13347080947929a7be5a874, type: 3}
+      objectReference: {fileID: 8300000, guid: 3c4310c378867f13283aca3e14aec59b, type: 3}
     - target: {fileID: 1495678456318767588, guid: a24d95fb9610b868fbb7464a68821f8f, type: 3}
       propertyPath: roundsJsonFile
       value: 
@@ -8449,7 +8449,7 @@ PrefabInstance:
     - target: {fileID: 1495678456318767588, guid: a24d95fb9610b868fbb7464a68821f8f, type: 3}
       propertyPath: categoryShiftSound
       value: 
-      objectReference: {fileID: 8300000, guid: cf32f2366e0180922bcf90c2c84b471d, type: 3}
+      objectReference: {fileID: 8300000, guid: 442f354ca31cdd23aa9c854b19cb7b31, type: 3}
     - target: {fileID: 1495678456318767588, guid: a24d95fb9610b868fbb7464a68821f8f, type: 3}
       propertyPath: requiredScoreToWin
       value: 24
