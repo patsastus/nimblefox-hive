@@ -241,13 +241,6 @@ public class SimpleWordChooser : MonoBehaviour
                 splashScreenDisplay.color = Color.red;
             }
         }
-        else
-        {
-            centerWordDisplay.gameObject.SetActive(true);
-            centerWordDisplay.transform.position = centerOrigin + Vector3.up * 1.5f;
-            centerWordDisplay.text = won ? "FIRST LIGHT REACHED!" : "GAME OVER";
-            centerWordDisplay.color = won ? Color.yellow : Color.red;
-        }
     }
 
     IEnumerator ResolveChoice(bool choseLeft)
