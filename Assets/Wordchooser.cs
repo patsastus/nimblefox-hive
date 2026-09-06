@@ -101,21 +101,7 @@ public class SimpleWordChooser : MonoBehaviour
             Debug.Log("[Failsafe] Destroyed duplicate EventSystem to prevent UI lag!");
         }
 
-        // FAILSAFE: Destroy duplicate AudioListeners but protect the Main Camera's listener
-        AudioListener[] listeners = FindObjectsOfType<AudioListener>();
-        if (listeners.Length > 1)
-        {
-            Camera mainCam = Camera.main;
-            foreach (var listener in listeners)
-            {
-                // Only destroy if it's NOT attached to the current Main Camera
-                if (mainCam != null && listener.gameObject != mainCam.gameObject)
-                {
-                    Destroy(listener);
-                }
-            }
-            Debug.Log("[Failsafe] Destroyed duplicate AudioListener!");
-        }
+        // Removed AudioListener failsafe as additive scene loading requires both listeners to briefly coexist
 
         string configPath = System.IO.Path.Combine(Application.streamingAssetsPath, "config.json");
         
