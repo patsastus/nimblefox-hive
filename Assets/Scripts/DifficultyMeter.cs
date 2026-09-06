@@ -148,42 +148,7 @@ public class DynamicDifficultyStars : MonoBehaviour
     
     float GetDifficulty()
     {
-        try
-        {
-            // Try to get currentDifficulty (it might be private)
-            FieldInfo field = wordChooser.GetType().GetField("currentDifficulty", 
-                BindingFlags.NonPublic | BindingFlags.Instance);
-            
-            if (field != null)
-            {
-                return (float)field.GetValue(wordChooser);
-            }
-            
-            // If not found, try to get it from the score
-            FieldInfo scoreField = wordChooser.GetType().GetField("score", 
-                BindingFlags.NonPublic | BindingFlags.Instance);
-            
-            if (scoreField != null)
-            {
-                int score = (int)scoreField.GetValue(wordChooser);
-                // Convert score to difficulty (0-1)
-                FieldInfo requiredField = wordChooser.GetType().GetField("requiredScoreToWin");
-                if (requiredField != null)
-                {
-                    int required = (int)requiredField.GetValue(wordChooser);
-                    if (required > 0)
-                    {
-                        return Mathf.Clamp01((float)score / required);
-                    }
-                }
-                return Mathf.Clamp01((float)score / 12f); // Default fallback
-            }
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogWarning($"DifficultyStars: Error reading difficulty - {e.Message}");
-        }
-        
+        if (wordChooser != null) return wordChooser.GetCurrentDifficulty();
         return 0f;
     }
     

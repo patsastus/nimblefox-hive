@@ -58,17 +58,7 @@ public class LightProgressBar : MonoBehaviour
         // Get required score to win from GameManager
         if (wordChooser != null && slider != null)
         {
-            // Get requiredScoreToWin using reflection (since it's public)
-            var field = wordChooser.GetType().GetField("requiredScoreToWin");
-            if (field != null)
-            {
-                totalRounds = (int)field.GetValue(wordChooser);
-            }
-            else
-            {
-                totalRounds = 12; // Default fallback
-            }
-
+            totalRounds = wordChooser.requiredScoreToWin;
             slider.minValue = 0;
             slider.maxValue = totalRounds;
             slider.value = 0;
@@ -87,16 +77,7 @@ public class LightProgressBar : MonoBehaviour
 
         if (wordChooser != null)
         {
-            // Get score using reflection (since it's private now)
-            int newScore = 0;
-            FieldInfo scoreField = wordChooser.GetType().GetField("score", 
-                BindingFlags.NonPublic | BindingFlags.Instance);
-            
-            if (scoreField != null)
-            {
-                newScore = (int)scoreField.GetValue(wordChooser);
-            }
-            
+            int newScore = wordChooser.GetScore();
             if (newScore != currentScore)
             {
                 currentScore = newScore;

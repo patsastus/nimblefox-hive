@@ -61,6 +61,9 @@ public class SimpleWordChooser : MonoBehaviour
     private int consecutiveWrongAnswers = 0;
     private int maxDifficultyReached = 0; // scale of 0 to 10 for UI purposes
 
+    public int GetScore() { return score; }
+    public float GetCurrentDifficulty() { return currentDifficulty; }
+
     private string currentCatA;
     private string currentCatB;
     private HashSet<string> usedWords = new HashSet<string>();
