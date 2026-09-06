@@ -41,7 +41,7 @@ public class SimpleWordChooser : MonoBehaviour
     [SerializeField] private SunriseLightingController sunriseLightingController;
 
     [Header("Audio")]
-    public AudioSource sfxSource;
+    
     public AudioClip swipeSound;
     public AudioClip successSound;
     public AudioClip failureSound;
@@ -137,7 +137,7 @@ public class SimpleWordChooser : MonoBehaviour
         cats.Remove(currentCatA);
         currentCatB = cats[Random.Range(0, cats.Count)];
 
-        if (sfxSource != null && categoryShiftSound != null) sfxSource.PlayOneShot(categoryShiftSound);
+        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX(categoryShiftSound);
 
         if (splashScreenDisplay != null)
         {
@@ -212,7 +212,7 @@ public class SimpleWordChooser : MonoBehaviour
         Transform target = choseLeft ? leftTarget : rightTarget;
         Vector3 targetPos = target != null ? target.position : (centerOrigin + (choseLeft ? Vector3.left : Vector3.right) * 6f);
 
-        if (sfxSource != null && swipeSound != null) sfxSource.PlayOneShot(swipeSound);
+        if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX(swipeSound);
 
         while (Vector3.Distance(centerWordDisplay.transform.position, targetPos) > 0.1f)
         {
@@ -231,7 +231,7 @@ public class SimpleWordChooser : MonoBehaviour
 
         if (isCorrect)
         {
-            if (sfxSource != null && successSound != null) sfxSource.PlayOneShot(successSound);
+            if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX(successSound);
             score++;
             currentDifficulty = Mathf.Clamp01(currentDifficulty + difficultyIncreasePerWin);
             consecutiveWrongAnswers = 0;
@@ -242,7 +242,7 @@ public class SimpleWordChooser : MonoBehaviour
         }
         else
         {
-            if (sfxSource != null && failureSound != null) sfxSource.PlayOneShot(failureSound);
+            if (AudioManager.Instance != null) AudioManager.Instance.PlaySFX(failureSound);
             score--;
             currentDifficulty = Mathf.Clamp01(currentDifficulty - difficultyDecreasePerLoss);
             consecutiveWrongAnswers++;
