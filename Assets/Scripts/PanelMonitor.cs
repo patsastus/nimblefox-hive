@@ -12,9 +12,12 @@ public class PanelMonitor : MonoBehaviour
         bool panelActive = (victoryPanel != null && victoryPanel.activeSelf) ||
                           (defeatPanel != null && defeatPanel.activeSelf);
         
-        if (giveUpButton != null && giveUpButton.activeSelf != panelActive)
+        // We want the button to be the OPPOSITE of the panel state
+        bool shouldButtonBeActive = !panelActive;
+        
+        if (giveUpButton != null && giveUpButton.activeSelf != shouldButtonBeActive)
         {
-            giveUpButton.SetActive(!panelActive);
+            giveUpButton.SetActive(shouldButtonBeActive);
         }
     }
 }
