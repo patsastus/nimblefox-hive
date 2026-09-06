@@ -48,13 +48,27 @@ public static class DynamicRoundGenerator
         }
     }
 
-    public static SimpleWordChooser.WordRound GetNextWord(string catA, string catB, float difficulty, HashSet<string> usedWords)
+    public static SimpleWordChooser.WordRound GetNextWord(string catA, string catB, float difficulty, HashSet<string> usedWords, SimpleWordChooser.GameConfig config)
     {
         if (db == null)
         {
             Debug.LogError("DynamicRoundGenerator not initialized!");
             return new SimpleWordChooser.WordRound();
         }
+
+        // Map the float difficulty to exactly 5 distinct visual/gameplay levels (0 to 4)
+        int level = 0;
+        if (difficulty < 0.15f) level = 0;
+        else if (difficulty < 0.35f) level = 1;
+        else if (difficulty < 0.55f) level = 2;
+        else if (difficulty < 0.75f) level = 3;
+        else level = 4;
+
+        // Calculate the explicit targets for this level based on config
+        float minPrimaryScore = config != null ? config.startPrimaryScore - (level * config.primaryScoreStep) : 0.8f - (level * 0.05f);
+        float targetDelta = config != null ? config.startTargetDelta - (level * config.targetDeltaStep) : 0.6f - (level * 0.1f);
+
+        Debug.Log($"[DynamicRoundGenerator] Generating Level {level + 1} word (Min Primary: {minPrimaryScore:F2}, Target Delta: {targetDelta:F2})");
 
         // Randomly pick which side is correct for this round
         bool isLeftCorrect = Random.value > 0.5f;
@@ -85,8 +99,8 @@ public static class DynamicRoundGenerator
 
             float maxScore = Mathf.Max(w.dawn, w.nocturne, w.hearth, w.frost, w.canopy);
             
-            // The word must be a primary match for the target category, and not a total junk word
-            if (Mathf.Approximately(maxScore, sTarget) && (sTarget + sOpposite > 0.7f))
+            // The word must be a primary match for the target category, and satisfy the level's minimum score threshold
+            if (Mathf.Approximately(maxScore, sTarget) && (sTarget >= minPrimaryScore))
             {
                 validPool.Add(w);
             }
@@ -94,17 +108,11 @@ public static class DynamicRoundGenerator
 
         if (validPool.Count == 0)
         {
-            Debug.LogWarning("Ran out of valid words for this category pair! Returning fallback.");
+            Debug.LogWarning($"Ran out of valid words for {targetCat} vs {oppositeCat} at Level {level + 1} (MinPrimary={minPrimaryScore:F2}). Returning fallback.");
             return new SimpleWordChooser.WordRound { word = "Error", leftCategory = catA, rightCategory = catB, isLeftCorrect = isLeftCorrect };
         }
 
-        // 2. Find the max delta to establish the "Easiest" possible word
-        float maxDelta = validPool.Max(w => w.GetScore(targetCat) - w.GetScore(oppositeCat));
-
-        // 3. Map the difficulty (0 to 1) to a target delta. 
-        // difficulty 0.0 = maxDelta (Easy)
-        // difficulty 1.0 = 0.02 (Extreme)
-        float targetDelta = Mathf.Lerp(maxDelta, 0.02f, difficulty);
+        // 2. We now have our pre-calculated targetDelta. Find the closest matches to it!
 
         // 4. Find the closest matches to the target delta
         var closest = validPool.OrderBy(w => Mathf.Abs((w.GetScore(targetCat) - w.GetScore(oppositeCat)) - targetDelta))

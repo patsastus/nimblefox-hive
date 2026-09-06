@@ -80,7 +80,13 @@ public class SimpleWordChooser : MonoBehaviour
         public float difficultyDecreasePerLoss;
         public int wrongAnswersForShift;
         public float flySpeed;
+        public float startPrimaryScore;
+        public float primaryScoreStep;
+        public float startTargetDelta;
+        public float targetDeltaStep;
     }
+
+    public GameConfig activeConfig;
 
     IEnumerator Start()
     {
@@ -150,15 +156,22 @@ public class SimpleWordChooser : MonoBehaviour
     private void ApplyConfig(string json)
     {
         try {
-            GameConfig config = JsonUtility.FromJson<GameConfig>(json);
-            requiredScoreToWin = config.requiredScoreToWin;
-            difficultyIncreasePerWin = config.difficultyIncreasePerWin;
-            difficultyDecreasePerLoss = config.difficultyDecreasePerLoss;
-            wrongAnswersForShift = config.wrongAnswersForShift;
-            flySpeed = config.flySpeed;
+            activeConfig = JsonUtility.FromJson<GameConfig>(json);
+            requiredScoreToWin = activeConfig.requiredScoreToWin;
+            difficultyIncreasePerWin = activeConfig.difficultyIncreasePerWin;
+            difficultyDecreasePerLoss = activeConfig.difficultyDecreasePerLoss;
+            wrongAnswersForShift = activeConfig.wrongAnswersForShift;
+            flySpeed = activeConfig.flySpeed;
             Debug.Log("Loaded external config.json successfully!");
         } catch (System.Exception e) {
             Debug.LogWarning("Failed to parse config.json: " + e.Message);
+            // Fallback config
+            activeConfig = new GameConfig {
+                startPrimaryScore = 0.8f,
+                primaryScoreStep = 0.05f,
+                startTargetDelta = 0.6f,
+                targetDeltaStep = 0.1f
+            };
         }
     }
 
@@ -198,7 +211,7 @@ public class SimpleWordChooser : MonoBehaviour
 
     void LoadNextRound()
     {
-        currentRound = DynamicRoundGenerator.GetNextWord(currentCatA, currentCatB, currentDifficulty, usedWords);
+        currentRound = DynamicRoundGenerator.GetNextWord(currentCatA, currentCatB, currentDifficulty, usedWords, activeConfig);
 
         centerWordDisplay.text = currentRound.word;
         centerWordDisplay.transform.position = centerOrigin;
