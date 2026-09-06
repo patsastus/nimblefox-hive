@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.SceneManagement;
+
 
 public class SimpleWordChooser : MonoBehaviour
 {
@@ -325,5 +327,15 @@ public class SimpleWordChooser : MonoBehaviour
         foreach (var r in renderers) { if (r.material.HasProperty("_Color") || r.material.HasProperty("_BaseColor")) r.material.color = Color.white; }
         foreach (var g in graphics) { g.color = Color.white; }
         foreach (var txt in texts) { txt.color = Color.white; }
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene("OpeningScreen");
     }
 }
