@@ -1,7 +1,11 @@
 {
-  "requiredScoreToWin": 5,
+  "requiredScoreToWin": 12,
   "difficultyIncreasePerWin": 0.15,
   "difficultyDecreasePerLoss": 0.20,
   "wrongAnswersForShift": 2,
-  "flySpeed": 15.0
+  "flySpeed": 15.0,
+  "startPrimaryScore": 0.65,
+  "primaryScoreStep": 0.02,
+  "startTargetDelta": 0.30,
+  "targetDeltaStep": 0.05
 }
