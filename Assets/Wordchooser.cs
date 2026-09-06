@@ -81,6 +81,17 @@ public class SimpleWordChooser : MonoBehaviour
 
     IEnumerator Start()
     {
+        // FAILSAFE: Destroy duplicate EventSystems that cause severe choppiness
+        UnityEngine.EventSystems.EventSystem[] eventSystems = FindObjectsOfType<UnityEngine.EventSystems.EventSystem>();
+        if (eventSystems.Length > 1)
+        {
+            for (int i = 1; i < eventSystems.Length; i++)
+            {
+                Destroy(eventSystems[i].gameObject);
+            }
+            Debug.Log("[Failsafe] Destroyed duplicate EventSystem to prevent UI lag!");
+        }
+
         string configPath = System.IO.Path.Combine(Application.streamingAssetsPath, "config.json");
         
 #if UNITY_WEBGL && !UNITY_EDITOR
