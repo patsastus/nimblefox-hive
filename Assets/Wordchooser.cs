@@ -92,6 +92,17 @@ public class SimpleWordChooser : MonoBehaviour
             Debug.Log("[Failsafe] Destroyed duplicate EventSystem to prevent UI lag!");
         }
 
+        // FAILSAFE: Destroy duplicate AudioListeners that cause console spam
+        UnityEngine.AudioListener[] listeners = FindObjectsOfType<UnityEngine.AudioListener>();
+        if (listeners.Length > 1)
+        {
+            for (int i = 1; i < listeners.Length; i++)
+            {
+                Destroy(listeners[i]);
+            }
+            Debug.Log("[Failsafe] Destroyed duplicate AudioListener!");
+        }
+
         string configPath = System.IO.Path.Combine(Application.streamingAssetsPath, "config.json");
         
 #if UNITY_WEBGL && !UNITY_EDITOR
