@@ -9,6 +9,9 @@ public class MenuUIHandler : MonoBehaviour
     // Reference to the logo - drag your logo GameObject here in the Inspector
     public GameObject logo;
 
+    // Reference to the GiveUp button
+    public GameObject giveUpButton;
+
     // This method will be called when the "Start" button is clicked
     public void StartNewGame()
     {
@@ -49,5 +52,35 @@ public class MenuUIHandler : MonoBehaviour
         #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false; // Stop play mode in the Editor
         #endif
+    }
+    
+    // NEW: Give Up method
+    public void GiveUp()
+    {
+        // Find the SimpleWordChooser in the scene
+        SimpleWordChooser wordChooser = FindObjectOfType<SimpleWordChooser>();
+        
+        if (wordChooser != null)
+        {
+            // Trigger defeat using reflection (since EndGame is private)
+            var method = wordChooser.GetType().GetMethod("EndGame", 
+                System.Reflection.BindingFlags.NonPublic | 
+                System.Reflection.BindingFlags.Instance);
+            
+            if (method != null)
+            {
+                method.Invoke(wordChooser, new object[] { false });
+            }
+        }
+        else
+        {
+            Debug.LogWarning("SimpleWordChooser not found!");
+        }
+        
+        // Hide the GiveUp button
+        if (giveUpButton != null)
+        {
+            giveUpButton.SetActive(false);
+        }
     }
 }
