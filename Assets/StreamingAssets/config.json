@@ -1,5 +1,5 @@
 {
-  "requiredScoreToWin": 12,
+  "requiredScoreToWin": 5,
   "difficultyIncreasePerWin": 0.15,
   "difficultyDecreasePerLoss": 0.20,
   "wrongAnswersForShift": 2,
