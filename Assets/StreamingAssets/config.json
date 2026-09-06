@@ -1,0 +1,7 @@
+{
+  "requiredScoreToWin": 12,
+  "difficultyIncreasePerWin": 0.15,
+  "difficultyDecreasePerLoss": 0.20,
+  "wrongAnswersForShift": 2,
+  "flySpeed": 15.0
+}

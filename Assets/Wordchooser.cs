@@ -54,8 +54,33 @@ public class SimpleWordChooser : MonoBehaviour
     private bool isResolving = false;
     private bool gameEnded = false;
 
-    void Start()
+    [System.Serializable]
+    public class GameConfig
     {
+        public int requiredScoreToWin;
+        public float difficultyIncreasePerWin;
+        public float difficultyDecreasePerLoss;
+        public int wrongAnswersForShift;
+        public float flySpeed;
+    }
+
+    IEnumerator Start()
+    {
+        string configPath = System.IO.Path.Combine(Application.streamingAssetsPath, "config.json");
+        
+#if UNITY_WEBGL && !UNITY_EDITOR
+        UnityEngine.Networking.UnityWebRequest www = UnityEngine.Networking.UnityWebRequest.Get(configPath);
+        yield return www.SendWebRequest();
+        if (www.result == UnityEngine.Networking.UnityWebRequest.Result.Success) {
+            ApplyConfig(www.downloadHandler.text);
+        }
+#else
+        if (System.IO.File.Exists(configPath)) {
+            ApplyConfig(System.IO.File.ReadAllText(configPath));
+        }
+        yield return null;
+#endif
+
         if (fullDatabaseJson != null)
         {
             DynamicRoundGenerator.Initialize(fullDatabaseJson);
@@ -80,6 +105,21 @@ public class SimpleWordChooser : MonoBehaviour
 
         ShiftCategories();
         LoadNextRound();
+    }
+
+    private void ApplyConfig(string json)
+    {
+        try {
+            GameConfig config = JsonUtility.FromJson<GameConfig>(json);
+            requiredScoreToWin = config.requiredScoreToWin;
+            difficultyIncreasePerWin = config.difficultyIncreasePerWin;
+            difficultyDecreasePerLoss = config.difficultyDecreasePerLoss;
+            wrongAnswersForShift = config.wrongAnswersForShift;
+            flySpeed = config.flySpeed;
+            Debug.Log("Loaded external config.json successfully!");
+        } catch (System.Exception e) {
+            Debug.LogWarning("Failed to parse config.json: " + e.Message);
+        }
     }
 
     void ShiftCategories()
