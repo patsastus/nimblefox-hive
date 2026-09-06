@@ -47,6 +47,17 @@ public class AudioManager : MonoBehaviour
             audioSource.Play();
         }
     }
+
+    public void SwitchBGM(AudioClip newBGM)
+    {
+        if (audioSource != null && newBGM != null)
+        {
+            audioSource.Stop();
+            audioSource.clip = newBGM;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+    }
     
     public void Stop()
     {

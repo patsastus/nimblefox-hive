@@ -22,6 +22,12 @@ public class SimpleWordChooser : MonoBehaviour
     [Tooltip("Optional dedicated text object for the endgame screen")]
     public TextMeshPro splashScreenDisplay;
 
+    [Header("Endgame Screens & Music")]
+    public GameObject victoryScreenPanel;
+    public GameObject defeatScreenPanel;
+    public AudioClip victoryMusic;
+    public AudioClip defeatMusic;
+
     [Header("Positions")]
     public Transform leftTarget;
     public Transform rightTarget;
@@ -183,6 +189,17 @@ public class SimpleWordChooser : MonoBehaviour
         if (rightCategoryDisplay) rightCategoryDisplay.gameObject.SetActive(false);
         if (centerWordDisplay) centerWordDisplay.gameObject.SetActive(false);
         
+        if (won)
+        {
+            if (victoryScreenPanel != null) victoryScreenPanel.SetActive(true);
+            if (AudioManager.Instance != null && victoryMusic != null) AudioManager.Instance.SwitchBGM(victoryMusic);
+        }
+        else
+        {
+            if (defeatScreenPanel != null) defeatScreenPanel.SetActive(true);
+            if (AudioManager.Instance != null && defeatMusic != null) AudioManager.Instance.SwitchBGM(defeatMusic);
+        }
+
         if (splashScreenDisplay != null)
         {
             splashScreenDisplay.gameObject.SetActive(true);
